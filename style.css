@@ -1,4 +1,4 @@
-/* General Styling */
+
 body {
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
@@ -112,4 +112,15 @@ footer {
     padding: 20px;
     background-color: #333;
     color: #fff;
+}
+
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* This makes the image circular */
+    border: 5px solid #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    object-fit: cover; /* This prevents the image from stretching */
+    margin-bottom: 15px;
 }
