@@ -1,197 +1,140 @@
-/* --- Google Font Import --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-
-/* --- CSS Variables for Easy Customization --- */
 :root {
-    --background-dark: #0A0A0A;
-    --text-primary: #EAEAEA;
-    --text-secondary: #A0A0A0;
-    --glass-background: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --accent-color: #8A2BE2; /* A vibrant purple */
-    --accent-glow: rgba(138, 43, 226, 0.5);
+    --background-light: #FBFBF8; /* Soft, warm off-white */
+    --text-dark: #2d3748; /* Dark grey for text */
+    --text-muted: #718096; /* Lighter grey for muted text */
+    --accent-color: #D97706; /* A warm, sophisticated amber/yellow */
+    --hover-background: #F7FAFC;
+    --border-color: #EDF2F7;
 }
 
-/* --- The animated background glow --- */
-@keyframes move-glow {
-    0% { transform: translate(10%, -10%) rotate(0deg); }
-    50% { transform: translate(50%, 40%) rotate(180deg); }
-    100% { transform: translate(10%, -10%) rotate(360deg); }
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, var(--accent-glow), transparent 60%);
-    filter: blur(100px);
-    will-change: transform;
-    animation: move-glow 25s ease-in-out infinite;
-    z-index: -1; /* Place it behind all content */
-    opacity: 0.5;
-}
-
-/* --- General Styling --- */
 body {
     font-family: 'Inter', sans-serif;
-    line-height: 1.6;
+    background-color: var(--background-light);
+    color: var(--text-dark);
     margin: 0;
-    padding: 20px;
-    background-color: var(--background-dark);
-    color: var(--text-primary);
-    overflow-x: hidden; /* Hide horizontal scrollbar from glow element */
 }
 
-main, header {
-    max-width: 800px;
+.wrapper {
+    display: flex;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    z-index: 1;
-    position: relative;
 }
 
-/* --- Header & Profile Picture --- */
-header {
-    text-align: center;
-    padding-bottom: 20px;
-    margin-top: 20px;
+/* ===== LEFT SIDEBAR ===== */
+.sidebar {
+    width: 40%;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 6rem 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    border: 3px solid var(--glass-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    object-fit: cover;
-    margin-bottom: 20px;
+    border: 2px solid var(--accent-color);
+    margin-bottom: 2rem;
 }
 
-h1 {
-    font-size: 3rem;
+.sidebar h1 {
+    font-size: 2.5rem;
+    margin: 0;
     font-weight: 700;
-    margin-bottom: 0;
-    color: #fff;
 }
 
 .headline {
     font-size: 1.2rem;
-    color: var(--text-secondary);
-    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
 }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    text-align: center;
-    letter-spacing: 0.1em;
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    margin-bottom: 1rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 700;
     text-transform: uppercase;
-    margin-top: 60px;
-    margin-bottom: 40px;
-}
-
-#about p {
-    text-align: left;
-    font-size: 1.1rem;
-    line-height: 1.7;
-}
-
-/* --- Glassmorphism Project Cards --- */
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-}
-
-.project-card {
-    background: var(--glass-background);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px); /* For Safari */
-    transition: all 0.3s ease;
-    text-align: left;
-}
-
-.project-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-}
-
-.project-card h3 {
-    margin-top: 0;
-    color: var(--text-primary);
-    font-size: 1.4rem;
-}
-
-.project-card p {
-    color: var(--text-secondary);
-}
-
-.tags {
-    margin: 20px 0;
-}
-
-.tag {
-    background-color: rgba(138, 43, 226, 0.1);
-    color: var(--accent-color);
-    padding: 6px 12px;
-    border-radius: 20px;
+    letter-spacing: 0.1em;
     font-size: 0.8rem;
-    font-weight: 500;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link span {
     display: inline-block;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border: 1px solid rgba(138, 43, 226, 0.2);
+    width: 30px;
+    height: 1px;
+    background-color: var(--text-muted);
+    margin-right: 1rem;
+    transition: all 0.3s ease;
 }
 
-.project-link {
-    text-decoration: none;
-    font-weight: 500;
-    color: var(--text-primary);
-    transition: color 0.2s ease;
+.nav-link:hover, .nav-link.active {
+    color: var(--text-dark);
 }
 
-.project-link:hover {
-    color: var(--accent-color);
+.nav-link:hover span, .nav-link.active span {
+    width: 60px;
+    background-color: var(--text-dark);
 }
 
-/* --- Contact & Footer --- */
-#contact {
-    text-align: center;
-    margin-top: 60px;
+.social-links {
+    margin-top: auto;
+    padding-top: 3rem;
 }
 
-.contact-links a {
-    display: inline-block;
-    margin: 10px;
-    padding: 12px 25px;
-    background-color: transparent;
-    color: var(--accent-color);
-    text-decoration: none;
-    border-radius: 8px;
-    border: 1px solid var(--accent-color);
-    font-weight: 500;
-    transition: all 0.2s ease;
+.social-links a {
+    color: var(--text-muted);
+    transition: color 0.3s ease;
 }
 
-.contact-links a:hover {
-    background-color: var(--accent-color);
-    color: #fff;
-    box-shadow: 0 0 20px var(--accent-glow);
+.social-links a:hover {
+    color: var(--text-dark);
 }
 
-footer {
-    text-align: center;
-    margin-top: 80px;
-    padding: 20px;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
+/* ===== RIGHT CONTENT AREA ===== */
+.content {
+    width: 60%;
+    padding: 6rem 3rem;
 }
+
+section {
+    margin-bottom: 4rem;
+}
+
+section h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    background: var(--background-light);
+    padding-top: 20px; /* Adjust for stickiness */
+    z-index:
