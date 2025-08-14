@@ -96,3 +96,21 @@ a {
 a:hover {
     color: #000;
 }
+
+/* --- Social Links --- */
+.social-links {
+    margin-top: 1.5rem; /* Add space above the icons */
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; /* Space between icons */
+}
+
+.social-links a {
+    color: var(--text-light); /* Use the muted text color */
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.social-links a:hover {
+    color: var(--text-dark); /* Darken icon on hover */
+}
