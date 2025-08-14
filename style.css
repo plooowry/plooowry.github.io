@@ -53,10 +53,10 @@ main {
     text-align: left;
 }
 
-section {
+/*section {
     margin-bottom: 3rem;
 }
-
+*/
 h2 {
     font-family: 'Inter', sans-serif;
     font-size: 1.5rem;
@@ -102,7 +102,7 @@ a:hover {
     margin-top: 1.5rem; /* Add space above the icons */
     display: flex;
     justify-content: center;
-    gap: 2.0rem; /* Space between icons */
+    gap: 1.5rem; /* Space between icons */
 }
 
 .social-links a {
