@@ -1,17 +1,15 @@
 :root {
-    --background-color: #fcf1d2; /* A very light, clean grey */
-    --card-background: #ffffff; /* White cards to pop against the background */
-    --primary-text: #212529; /* A strong, near-black for high contrast */
-    --secondary-text: #6c757d; /* A softer grey for less important text */
-    --accent-color: #0056b3; /* A professional, deep blue for links and highlights */
-    --border-color: #dee2e6; /* A light border for cards */
-    --shadow-color: rgba(0, 0, 0, 0.075);
+    --background-color: #fcf1d2; /* The new warm background color */
+    --primary-text: #3a3a3a;     /* A softer black for better harmony */
+    --secondary-text: #6b6b6b;   /* A muted grey for less important text */
+    --accent-color: #0056b3;     /* A professional, deep blue for links and highlights */
+    --border-color: #d3c4a2;     /* A border color that complements the new background */
 }
 
 body {
-    font-family: 'Inter', sans-serif; /* Using a modern sans-serif for a tech feel */
-    font-size: 16px; /* Increased base font size for readability */
-    line-height: 1.6; /* Improved line spacing for easier reading */
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; /* Reduced font size for a neater look */
+    line-height: 1.5; /* Slightly reduced for tighter text blocks */
     background-color: var(--background-color);
     color: var(--primary-text);
     margin: 0;
@@ -19,34 +17,34 @@ body {
 }
 
 .content-wrapper {
-    max-width: 800px;
+    max-width: 700px; /* Reduced max-width for a more compact feel */
     margin: 0 auto;
-    padding: 3rem 1.5rem; /* More vertical space and responsive horizontal padding */
+    padding: 2.5rem 1.5rem; /* Reduced vertical padding */
 }
 
 /* --- Header Section --- */
 header {
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem; /* Reduced space after header */
 }
 
 .profile-picture {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     margin-bottom: 1.5rem;
-    border: 5px solid var(--card-background);
-    box-shadow: 0 4px 15px var(--shadow-color);
+    border: 3px solid #fff; /* Simple white border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Simplified shadow */
 }
 
 h1 {
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
 }
 
 .about-text {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--secondary-text);
     max-width: 550px;
     margin: 0 auto 1.5rem auto;
@@ -67,7 +65,7 @@ h1 {
 
 .social-links a:hover {
     color: var(--accent-color);
-    transform: scale(1.1); /* Adds a nice interactive pop */
+    transform: scale(1.1);
 }
 
 /* --- Main Content Sections --- */
@@ -76,35 +74,25 @@ main {
 }
 
 section {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem; /* Reduced space between sections */
 }
 
 h2 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 2rem;
-    padding-left: 1rem;
-    border-left: 4px solid var(--accent-color); /* A stylish accent for section titles */
+    margin-bottom: 1.5rem; /* Reduced space after section titles */
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color); /* A simple underline for separation */
 }
 
-/* --- The Card Layout for Items --- */
+/* --- Simplified Item Styling --- */
 .item {
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 8px; /* Soft rounded corners */
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 5px var(--shadow-color);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.item:hover {
-    transform: translateY(-5px); /* Lifts the card on hover */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.25rem; /* Reduced space between items */
+    /* All card styling (background, border, shadow, padding) has been removed */
 }
 
 .item h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
     margin: 0 0 0.25rem 0;
     color: var(--primary-text);
