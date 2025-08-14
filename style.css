@@ -6,18 +6,23 @@
 }
 
 body {
-    font-family: 'Lora', serif;
-    font-size: 14px;        
-    line-height: 1.0;       
+    font-family: 'Lora', serif; /* Classic serif font for an academic feel */
+    font-size: 18px; /* Increased for better readability */
+    line-height: 1.7; /* Increased for more breathing room */
     background-color: var(--background-light);
     color: var(--text-dark);
     margin: 0;
-    padding: 2rem;
+    padding: 2rem 0; /* Adjusted for content wrapper */
 }
 
 .content-wrapper {
     max-width: 700px;
-    margin: 2rem auto; /* Center the content */
+    margin: 4rem auto; /* Increased top/bottom margin */
+    background-color: #fff; /* A slightly whiter background for the content */
+    box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    border: 1px solid var(--border-color); /* A clean border */
+    border-radius: 4px; /* Slightly rounded corners */
+    padding: 3rem 4rem; /* Internal padding */
 }
 
 /* Header Section */
@@ -29,12 +34,11 @@ header {
 }
 
 .profile-picture {
-    width: 150px;           /* CHANGE: Was 120px */
-    height: 150px;          /* CHANGE: Was 120px */
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     margin-bottom: 1.5rem;
-    object-fit: cover;      /* ADD: Ensures image covers the space */
-    transform: scale(1.15); /* ADD: Zooms the image content in by 15% */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07); /* Adds depth to the picture */
 }
 
 h1 {
@@ -61,14 +65,23 @@ section {
 
 h2 {
     font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Adjusted size */
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem; /* Increased padding */
+    margin-bottom: 2rem; /* Increased space below */
+    letter-spacing: 0.05em;  /* Adds subtle spacing */
+    text-transform: uppercase; /* Makes titles more distinct */
 }
 
 .item {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 1rem; /* Padding for the hover effect */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.item:hover {
+    background-color: rgba(0, 0, 0, 0.02); /* A very faint background on hover */
 }
 
 .item h3 {
@@ -88,31 +101,30 @@ h2 {
     color: var(--text-dark);
 }
 
-/* Links */
+/* Links and Social Icons */
 a {
     color: var(--text-dark);
     text-decoration: underline;
     transition: color 0.2s ease-in-out;
 }
 
-/* --- Social Links --- */
+a:hover {
+    color: #000;
+}
+
 .social-links {
-    margin-top: 1.5rem; /* Add space above the icons */
+    margin-top: 1.5rem;
     display: flex;
     justify-content: center;
-    gap: 1.5rem; /* Space between icons */
+    gap: 1.5rem;
 }
 
 .social-links a {
-    color: var(--text-light); /* Use the muted text color */
+    color: var(--text-light);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
 }
 
 .social-links a:hover {
-    color: var(--text-dark); /* Darken icon on hover */
-}
-
-a:hover {
-    color: #000;
+    color: var(--text-dark);
 }
