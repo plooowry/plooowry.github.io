@@ -7,8 +7,8 @@
 
 body {
     font-family: 'Lora', serif; /* Classic serif font for an academic feel */
-    font-size: 18px;
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.0;
     background-color: var(--background-light);
     color: var(--text-dark);
     margin: 0;
@@ -102,7 +102,7 @@ a:hover {
     margin-top: 1.5rem; /* Add space above the icons */
     display: flex;
     justify-content: center;
-    gap: 1.5rem; /* Space between icons */
+    gap: 2.0rem; /* Space between icons */
 }
 
 .social-links a {
