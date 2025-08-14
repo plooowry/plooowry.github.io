@@ -6,9 +6,9 @@
 }
 
 body {
-    font-family: 'Lora', serif; /* Classic serif font for an academic feel */
-    font-size: 18px;
-    line-height: 1.7;
+    font-family: 'Lora', serif;
+    font-size: 17px;        /* CHANGE: Was 18px */
+    line-height: 1.6;       /* CHANGE: Was 1.7 */
     background-color: var(--background-light);
     color: var(--text-dark);
     margin: 0;
