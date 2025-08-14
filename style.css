@@ -1,140 +1,98 @@
 :root {
-    --background-light: #FBFBF8; /* Soft, warm off-white */
-    --text-dark: #2d3748; /* Dark grey for text */
-    --text-muted: #718096; /* Lighter grey for muted text */
-    --accent-color: #D97706; /* A warm, sophisticated amber/yellow */
-    --hover-background: #F7FAFC;
-    --border-color: #EDF2F7;
-}
-
-* {
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+    --background-light: #FBFBF8; /* The soft off-white background */
+    --text-dark: #3a3a3a; /* A soft, dark grey for text */
+    --text-light: #6b6b6b; /* Lighter grey for details */
+    --border-color: #e5e5e5;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Lora', serif; /* Classic serif font for an academic feel */
+    font-size: 18px;
+    line-height: 1.7;
     background-color: var(--background-light);
     color: var(--text-dark);
     margin: 0;
+    padding: 2rem;
 }
 
-.wrapper {
-    display: flex;
-    max-width: 1200px;
-    margin: 0 auto;
+.content-wrapper {
+    max-width: 700px;
+    margin: 2rem auto; /* Center the content */
 }
 
-/* ===== LEFT SIDEBAR ===== */
-.sidebar {
-    width: 40%;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    padding: 6rem 3rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.sidebar-content {
-    display: flex;
-    flex-direction: column;
+/* Header Section */
+header {
+    text-align: center;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;
 }
 
 .profile-picture {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    border: 2px solid var(--accent-color);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
-.sidebar h1 {
+h1 {
+    font-family: 'Inter', sans-serif; /* A clean sans-serif for the main name */
     font-size: 2.5rem;
-    margin: 0;
-    font-weight: 700;
+    margin: 0 0 1rem 0;
 }
 
-.headline {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    margin-top: 0.5rem;
-    margin-bottom: 3rem;
+.about-text {
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    color: var(--text-light);
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-nav li {
-    margin-bottom: 1rem;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 0.8rem;
-    transition: color 0.3s ease;
-    display: flex;
-    align-items: center;
-}
-
-.nav-link span {
-    display: inline-block;
-    width: 30px;
-    height: 1px;
-    background-color: var(--text-muted);
-    margin-right: 1rem;
-    transition: all 0.3s ease;
-}
-
-.nav-link:hover, .nav-link.active {
-    color: var(--text-dark);
-}
-
-.nav-link:hover span, .nav-link.active span {
-    width: 60px;
-    background-color: var(--text-dark);
-}
-
-.social-links {
-    margin-top: auto;
-    padding-top: 3rem;
-}
-
-.social-links a {
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-    color: var(--text-dark);
-}
-
-/* ===== RIGHT CONTENT AREA ===== */
-.content {
-    width: 60%;
-    padding: 6rem 3rem;
+/* Main Content Sections */
+main {
+    text-align: left;
 }
 
 section {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
-section h2 {
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.item {
+    margin-bottom: 1.5rem;
+}
+
+.item h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem 0;
+}
+
+.item p {
+    margin: 0;
+    color: var(--text-light);
+}
+
+.item p strong {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
     color: var(--text-dark);
-    margin-bottom: 2rem;
-    position: sticky;
-    top: 0;
-    background: var(--background-light);
-    padding-top: 20px; /* Adjust for stickiness */
-    z-index:
+}
+
+/* Links */
+a {
+    color: var(--text-dark);
+    text-decoration: underline;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #000;
+}
