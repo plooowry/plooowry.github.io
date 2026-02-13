@@ -63,67 +63,6 @@
         </main>
     </div>
 
-<!-- Add this code to the bottom of your index.html file, just before the closing </body> tag -->
-
-<!-- Valentine's Day Secret Input -->
-<div id="valentine-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-    <input 
-        type="password" 
-        id="secret-code" 
-        placeholder="🔒" 
-        maxlength="4"
-        style="
-            width: 60px;
-            padding: 10px;
-            border: 2px solid #ff69b4;
-            border-radius: 25px;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-            transition: all 0.3s ease;
-        "
-    />
-</div>
-
-<!-- Valentine's Message (hidden by default) -->
-<div id="valentine-message" style="
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 48px;
-    font-weight: bold;
-    color: #ff1493;
-    text-align: center;
-    z-index: 10000;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    animation: pulse 1.5s ease-in-out infinite;
-">
-    Happy Valentine's Day, Bort!! 💕
-</div>
-
-<!-- Canvas for hearts and confetti -->
-<canvas id="valentine-canvas" style="
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: auto;
-    z-index: 9999;
-    cursor: pointer;
-"></canvas>
-
-<style>
-@keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.1); }
-}
-</style>
-<script>
-
 <div id="valentine-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
     <input 
         type="password" 
@@ -446,7 +385,5 @@
     });
 })();
 </script>
-
-    
 </body>
 </html>
