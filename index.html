@@ -123,6 +123,84 @@
 }
 </style>
 <script>
+
+<div id="valentine-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <input 
+        type="password" 
+        id="secret-code" 
+        placeholder="🔒" 
+        maxlength="4"
+        style="
+            width: 60px;
+            padding: 10px;
+            border: 2px solid #ff69b4;
+            border-radius: 25px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        "
+    />
+</div>
+
+<div id="valentine-message" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff1493;
+    text-align: center;
+    z-index: 10000;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: pulse 1.5s ease-in-out infinite;
+">
+    Happy Valentine's Day, Bort!! 💕
+</div>
+
+<canvas id="valentine-canvas" style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 9999;
+    cursor: pointer;
+"></canvas>
+
+<style>
+/* CSS for the Valentine Animations */
+.photo-confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    animation: photoFall linear forwards;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 3px solid white;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes photoFall {
+    0% { 
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh) translateX(var(--drift)) rotate(var(--rotation));
+        opacity: 0;
+    }
+}
+</style>
+
+<script>
 // Valentine's Day Surprise Script
 (function() {
     const secretInput = document.getElementById('secret-code');
@@ -283,9 +361,9 @@
         photoDiv.style.width = size + 'px';
         photoDiv.style.height = size + 'px';
         
-        // Position at click location
-        photoDiv.style.left = x + 'px';
-        photoDiv.style.top = y + 'px';
+        // Position at click location (centered)
+        photoDiv.style.left = (x - size / 2) + 'px';
+        photoDiv.style.top = (y - size / 2) + 'px';
         
         // Random rotation and animation duration
         const rotation = Math.random() * 720 - 360; // -360 to 360 degrees
@@ -297,7 +375,7 @@
         photoDiv.style.animationDuration = duration + 's';
         
         document.body.appendChild(photoDiv);
-        photoElements.push(photoElements);
+        photoElements.push(photoDiv);
         
         // Remove after animation completes
         setTimeout(() => {
@@ -368,5 +446,7 @@
     });
 })();
 </script>
+
+    
 </body>
 </html>
