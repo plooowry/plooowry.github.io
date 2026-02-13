@@ -63,5 +63,239 @@
         </main>
     </div>
 
+<!-- Add this code to the bottom of your index.html file, just before the closing </body> tag -->
+
+<!-- Valentine's Day Secret Input -->
+<div id="valentine-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <input 
+        type="password" 
+        id="secret-code" 
+        placeholder="🔒" 
+        maxlength="4"
+        style="
+            width: 60px;
+            padding: 10px;
+            border: 2px solid #ff69b4;
+            border-radius: 25px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+        "
+    />
+</div>
+
+<!-- Valentine's Message (hidden by default) -->
+<div id="valentine-message" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff1493;
+    text-align: center;
+    z-index: 10000;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    animation: pulse 1.5s ease-in-out infinite;
+">
+    Happy Valentine's Day, Bort!! 💕
+</div>
+
+<!-- Canvas for hearts and confetti -->
+<canvas id="valentine-canvas" style="
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 9999;
+    cursor: pointer;
+"></canvas>
+
+<style>
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+</style>
+
+<script>
+// Valentine's Day Surprise Script
+(function() {
+    const secretInput = document.getElementById('secret-code');
+    const valentineMessage = document.getElementById('valentine-message');
+    const canvas = document.getElementById('valentine-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let animationActive = false;
+    let particles = [];
+    
+    // Set canvas size
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    // Particle class for hearts and confetti
+    class Particle {
+        constructor(x, y, type) {
+            this.x = x;
+            this.y = y;
+            this.type = type; // 'heart' or 'confetti'
+            this.size = Math.random() * 20 + 20;
+            this.speedX = (Math.random() - 0.5) * 2;
+            this.speedY = Math.random() * 1.5 + 1;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 3;
+            this.color = this.type === 'confetti' 
+                ? `hsl(${Math.random() * 360}, 100%, 50%)`
+                : '#ff1493';
+            this.gravity = 0.05;
+        }
+        
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.speedY += this.gravity;
+            this.rotation += this.rotationSpeed;
+            
+            // Bounce off sides
+            if (this.x < 0 || this.x > canvas.width) {
+                this.speedX *= -0.5;
+            }
+        }
+        
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate((this.rotation * Math.PI) / 180);
+            
+            if (this.type === 'heart') {
+                // Draw heart
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(0, topCurveHeight);
+                // Top left curve
+                ctx.bezierCurveTo(
+                    0, 0,
+                    -this.size / 2, 0,
+                    -this.size / 2, topCurveHeight
+                );
+                // Bottom left curve
+                ctx.bezierCurveTo(
+                    -this.size / 2, (this.size + topCurveHeight) / 2,
+                    0, (this.size + topCurveHeight) / 1.2,
+                    0, this.size
+                );
+                // Bottom right curve
+                ctx.bezierCurveTo(
+                    0, (this.size + topCurveHeight) / 1.2,
+                    this.size / 2, (this.size + topCurveHeight) / 2,
+                    this.size / 2, topCurveHeight
+                );
+                // Top right curve
+                ctx.bezierCurveTo(
+                    this.size / 2, 0,
+                    0, 0,
+                    0, topCurveHeight
+                );
+                ctx.closePath();
+                ctx.fill();
+            } else {
+                // Draw confetti (rectangle)
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size / 3);
+            }
+            
+            ctx.restore();
+        }
+        
+        isOffScreen() {
+            return this.y > canvas.height + 50;
+        }
+    }
+    
+    // Create particles
+    function createParticles() {
+        const particleCount = 50;
+        for (let i = 0; i < particleCount; i++) {
+            const x = Math.random() * canvas.width;
+            const y = -50;
+            const type = Math.random() > 0.5 ? 'heart' : 'confetti';
+            particles.push(new Particle(x, y, type));
+        }
+    }
+    
+    // Create burst of particles at specific location
+    function createBurst(x, y) {
+        const burstCount = 15;
+        for (let i = 0; i < burstCount; i++) {
+            const type = Math.random() > 0.3 ? 'confetti' : 'heart';
+            const particle = new Particle(x, y, type);
+            // Give burst particles more varied initial velocities
+            particle.speedX = (Math.random() - 0.5) * 6;
+            particle.speedY = (Math.random() - 0.5) * 6 - 2;
+            particles.push(particle);
+        }
+    }
+    
+    // Animation loop
+    function animate() {
+        if (!animationActive) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Update and draw particles
+        particles = particles.filter(particle => !particle.isOffScreen());
+        
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+        
+        // Add new particles occasionally
+        if (Math.random() < 0.3 && particles.length < 100) {
+            const x = Math.random() * canvas.width;
+            const type = Math.random() > 0.5 ? 'heart' : 'confetti';
+            particles.push(new Particle(x, -50, type));
+        }
+        
+        requestAnimationFrame(animate);
+    }
+    
+    // Check for secret code
+    secretInput.addEventListener('input', function() {
+        if (this.value === '0000') {
+            // Trigger Valentine's surprise!
+            animationActive = true;
+            canvas.style.display = 'block';
+            valentineMessage.style.display = 'block';
+            resizeCanvas();
+            createParticles();
+            animate();
+            
+            // Hide input
+            document.getElementById('valentine-container').style.display = 'none';
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', resizeCanvas);
+    
+    // Click to create burst of confetti
+    canvas.addEventListener('click', function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        createBurst(x, y);
+    });
+})();
+</script>
+    
 </body>
 </html>
