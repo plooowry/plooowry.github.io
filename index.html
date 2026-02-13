@@ -117,25 +117,15 @@
     position: fixed;
     pointer-events: none;
     z-index: 10000;
-    animation: photoFall linear forwards;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    /* Removed the CSS animation - we use JS for better physics now */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     border: 3px solid white;
+    will-change: transform; /* Performance optimization */
 }
 
 @keyframes pulse {
     0%, 100% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.1); }
-}
-
-@keyframes photoFall {
-    0% { 
-        transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% { 
-        transform: translateY(100vh) translateX(var(--drift)) rotate(var(--rotation));
-        opacity: 0;
-    }
 }
 </style>
 
@@ -149,7 +139,7 @@
     
     let animationActive = false;
     let particles = [];
-    let photoElements = [];
+    let photoParticles = []; // Changed to store PhotoParticle objects
     
     // ⭐ YOUR PHOTOS OF BEC ⭐
     const becPhotos = [
@@ -167,7 +157,9 @@
         canvas.height = window.innerHeight;
     }
     
-    // Particle class for hearts and confetti
+    // ---------------------------------------------------------
+    // Class 1: Regular Canvas Particles (Hearts & Confetti)
+    // ---------------------------------------------------------
     class Particle {
         constructor(x, y, type, burstMode = false) {
             this.x = x;
@@ -177,8 +169,8 @@
             
             if (burstMode) {
                 // Burst from click - explosive outward motion
-                this.speedX = (Math.random() - 0.5) * 6;
-                this.speedY = (Math.random() - 0.5) * 6 - 2;
+                this.speedX = (Math.random() - 0.5) * 10; // Faster spread
+                this.speedY = (Math.random() - 0.5) * 10 - 3;
             } else {
                 // Gentle falling
                 this.speedX = (Math.random() - 0.5) * 2;
@@ -216,30 +208,10 @@
                 ctx.beginPath();
                 const topCurveHeight = this.size * 0.3;
                 ctx.moveTo(0, topCurveHeight);
-                // Top left curve
-                ctx.bezierCurveTo(
-                    0, 0, 
-                    -this.size / 2, 0, 
-                    -this.size / 2, topCurveHeight
-                );
-                // Bottom left curve
-                ctx.bezierCurveTo(
-                    -this.size / 2, (this.size + topCurveHeight) / 2, 
-                    0, (this.size + topCurveHeight) / 1.2, 
-                    0, this.size
-                );
-                // Bottom right curve
-                ctx.bezierCurveTo(
-                    0, (this.size + topCurveHeight) / 1.2, 
-                    this.size / 2, (this.size + topCurveHeight) / 2, 
-                    this.size / 2, topCurveHeight
-                );
-                // Top right curve
-                ctx.bezierCurveTo(
-                    this.size / 2, 0, 
-                    0, 0, 
-                    0, topCurveHeight
-                );
+                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, (this.size + topCurveHeight) / 1.2, 0, this.size);
+                ctx.bezierCurveTo(0, (this.size + topCurveHeight) / 1.2, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
                 ctx.closePath();
                 ctx.fill();
             } else {
@@ -247,7 +219,6 @@
                 ctx.fillStyle = this.color;
                 ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size / 3);
             }
-            
             ctx.restore();
         }
         
@@ -255,8 +226,71 @@
             return this.y > canvas.height + 50;
         }
     }
+
+    // ---------------------------------------------------------
+    // Class 2: Photo Particles (DOM Elements with JS Physics)
+    // ---------------------------------------------------------
+    class PhotoParticle {
+        constructor(x, y, imageUrl) {
+            // Create DOM Element
+            this.element = document.createElement('div');
+            this.element.className = 'photo-confetti';
+            
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '8px';
+            this.element.appendChild(img);
+            
+            // Append to body
+            document.body.appendChild(this.element);
+
+            // Size
+            this.size = Math.random() * 60 + 60; // 60px to 120px
+            this.element.style.width = this.size + 'px';
+            this.element.style.height = this.size + 'px';
+
+            // Physics Properties
+            // Center the element on the mouse click (with slight random offset to prevent stacking)
+            this.x = (x - this.size / 2) + (Math.random() - 0.5) * 20;
+            this.y = (y - this.size / 2) + (Math.random() - 0.5) * 20;
+            
+            // Explosive velocity!
+            this.vx = (Math.random() - 0.5) * 15; // Wide horizontal spread
+            this.vy = (Math.random() * -15) - 5;  // Strong pop upwards
+            this.gravity = 0.4; // Heavier gravity for photos
+            this.drag = 0.98;   // Air resistance
+
+            // Rotation properties
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 10; // Fast spin
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += this.gravity;
+            this.vx *= this.drag; // Slow down horizontal movement slightly
+            this.rotation += this.rotationSpeed;
+        }
+
+        draw() {
+            // Move the actual DOM element
+            this.element.style.transform = `translate(${this.x}px, ${this.y}px) rotate(${this.rotation}deg)`;
+        }
+
+        isOffScreen() {
+            return this.y > window.innerHeight + 200; // Allow it to fall well below screen
+        }
+
+        destroy() {
+            this.element.remove();
+        }
+    }
     
-    // Create particles
+    // Create random background particles
     function createParticles() {
         const particleCount = 50;
         for (let i = 0; i < particleCount; i++) {
@@ -267,7 +301,7 @@
         }
     }
     
-    // Create burst of particles at specific location
+    // Create burst of canvas particles
     function createBurst(x, y) {
         const burstCount = 15;
         for (let i = 0; i < burstCount; i++) {
@@ -277,67 +311,44 @@
         }
     }
     
-    // Create falling photo confetti
-    function createPhotoConfetti(x, y) {
-        // Pick a random photo
-        const randomPhoto = becPhotos[Math.floor(Math.random() * becPhotos.length)];
-        
-        const photoDiv = document.createElement('div');
-        photoDiv.className = 'photo-confetti';
-        
-        // Create image element
-        const img = document.createElement('img');
-        img.src = randomPhoto;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '8px';
-        
-        photoDiv.appendChild(img);
-        
-        // Random size between 60px and 120px
-        const size = Math.random() * 60 + 60;
-        photoDiv.style.width = size + 'px';
-        photoDiv.style.height = size + 'px';
-        
-        // Position at click location (centered)
-        photoDiv.style.left = (x - size / 2) + 'px';
-        photoDiv.style.top = (y - size / 2) + 'px';
-        
-        // Random rotation and animation duration
-        const rotation = Math.random() * 720 - 360; // -360 to 360 degrees
-        const duration = Math.random() * 2 + 3; // 3-5 seconds
-        const drift = Math.random() * 200 - 100; // -100 to 100px horizontal drift
-        
-        photoDiv.style.setProperty('--rotation', rotation + 'deg');
-        photoDiv.style.setProperty('--drift', drift + 'px');
-        photoDiv.style.animationDuration = duration + 's';
-        
-        document.body.appendChild(photoDiv);
-        photoElements.push(photoDiv);
-        
-        // Remove after animation completes
-        setTimeout(() => {
-            photoDiv.remove();
-            photoElements = photoElements.filter(el => el !== photoDiv);
-        }, duration * 1000 + 500);
+    // Create explosive photo particles (ALL photos at once)
+    function createPhotoExplosion(x, y) {
+        // Iterate through EVERY photo in the list
+        becPhotos.forEach(photoUrl => {
+            // Create a particle for this specific photo
+            // The random velocity in the class constructor will ensure they spread out
+            const particle = new PhotoParticle(x, y, photoUrl);
+            photoParticles.push(particle);
+        });
     }
     
-    // Animation loop
+    // Main Animation Loop
     function animate() {
         if (!animationActive) return;
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Update and draw particles
+        // 1. Update Canvas Particles (Hearts/Confetti)
         particles = particles.filter(particle => !particle.isOffScreen());
-        
         particles.forEach(particle => {
             particle.update();
             particle.draw();
         });
         
-        // Add new particles occasionally
+        // 2. Update Photo Particles (DOM Elements)
+        // Filter out photos that fell off screen
+        for (let i = photoParticles.length - 1; i >= 0; i--) {
+            let p = photoParticles[i];
+            p.update();
+            p.draw();
+            
+            if (p.isOffScreen()) {
+                p.destroy(); // Remove from DOM
+                photoParticles.splice(i, 1); // Remove from array
+            }
+        }
+
+        // Add new background particles occasionally
         if (Math.random() < 0.3 && particles.length < 100) {
             const x = Math.random() * canvas.width;
             const y = -50;
@@ -351,7 +362,11 @@
     // Check for secret code
     secretInput.addEventListener('input', function() {
         if (this.value === '0000') {
-            // Trigger Valentine's surprise!
+            // 1. Hide the main website content immediately
+            document.querySelector('.content-wrapper').style.display = 'none';
+            document.body.style.backgroundColor = 'white';
+
+            // 2. Trigger Valentine's surprise!
             animationActive = true;
             canvas.style.display = 'block';
             valentineMessage.style.display = 'block';
@@ -359,7 +374,7 @@
             createParticles();
             animate();
             
-            // Hide input
+            // 3. Hide the secret input box
             document.getElementById('valentine-container').style.display = 'none';
         }
     });
@@ -372,16 +387,9 @@
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        createBurst(x, y);
         
-        // Create 3-5 photo confetti at click location
-        const photoCount = Math.floor(Math.random() * 3) + 3; // 3-5 photos
-        for (let i = 0; i < photoCount; i++) {
-            // Slight offset from exact click position for spread effect
-            const offsetX = e.clientX + (Math.random() - 0.5) * 100;
-            const offsetY = e.clientY + (Math.random() - 0.5) * 100;
-            createPhotoConfetti(offsetX, offsetY);
-        }
+        createBurst(x, y);          // Canvas confetti
+        createPhotoExplosion(x, y); // All 6 Photos
     });
 })();
 </script>
