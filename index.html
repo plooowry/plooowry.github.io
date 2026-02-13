@@ -122,7 +122,6 @@
     50% { transform: translate(-50%, -50%) scale(1.1); }
 }
 </style>
-
 <script>
 // Valentine's Day Surprise Script
 (function() {
@@ -133,6 +132,17 @@
     
     let animationActive = false;
     let particles = [];
+    let photoElements = [];
+    
+    // ⭐ YOUR PHOTOS OF BEC ⭐
+    const becPhotos = [
+        'PXL_20240122_174542379.jpg',
+        'PXL_20240126_165806529.jpg',
+        'PXL_20240907_162308923.jpg',
+        'PXL_20240908_144427319.jpg',
+        'PXL_20241018_202248085.PORTRAIT.jpg',
+        'PXL_20241222_184554309.PORTRAIT.jpg'
+    ];
     
     // Set canvas size
     function resizeCanvas() {
@@ -142,13 +152,22 @@
     
     // Particle class for hearts and confetti
     class Particle {
-        constructor(x, y, type) {
+        constructor(x, y, type, burstMode = false) {
             this.x = x;
             this.y = y;
             this.type = type; // 'heart' or 'confetti'
             this.size = Math.random() * 20 + 20;
-            this.speedX = (Math.random() - 0.5) * 2;
-            this.speedY = Math.random() * 1.5 + 1;
+            
+            if (burstMode) {
+                // Burst from click - explosive outward motion
+                this.speedX = (Math.random() - 0.5) * 6;
+                this.speedY = (Math.random() - 0.5) * 6 - 2;
+            } else {
+                // Gentle falling
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = Math.random() * 1.5 + 1;
+            }
+            
             this.rotation = Math.random() * 360;
             this.rotationSpeed = (Math.random() - 0.5) * 3;
             this.color = this.type === 'confetti' 
@@ -182,26 +201,26 @@
                 ctx.moveTo(0, topCurveHeight);
                 // Top left curve
                 ctx.bezierCurveTo(
-                    0, 0,
-                    -this.size / 2, 0,
+                    0, 0, 
+                    -this.size / 2, 0, 
                     -this.size / 2, topCurveHeight
                 );
                 // Bottom left curve
                 ctx.bezierCurveTo(
-                    -this.size / 2, (this.size + topCurveHeight) / 2,
-                    0, (this.size + topCurveHeight) / 1.2,
+                    -this.size / 2, (this.size + topCurveHeight) / 2, 
+                    0, (this.size + topCurveHeight) / 1.2, 
                     0, this.size
                 );
                 // Bottom right curve
                 ctx.bezierCurveTo(
-                    0, (this.size + topCurveHeight) / 1.2,
-                    this.size / 2, (this.size + topCurveHeight) / 2,
+                    0, (this.size + topCurveHeight) / 1.2, 
+                    this.size / 2, (this.size + topCurveHeight) / 2, 
                     this.size / 2, topCurveHeight
                 );
                 // Top right curve
                 ctx.bezierCurveTo(
-                    this.size / 2, 0,
-                    0, 0,
+                    this.size / 2, 0, 
+                    0, 0, 
                     0, topCurveHeight
                 );
                 ctx.closePath();
@@ -227,7 +246,7 @@
             const x = Math.random() * canvas.width;
             const y = -50;
             const type = Math.random() > 0.5 ? 'heart' : 'confetti';
-            particles.push(new Particle(x, y, type));
+            particles.push(new Particle(x, y, type, false));
         }
     }
     
@@ -236,12 +255,55 @@
         const burstCount = 15;
         for (let i = 0; i < burstCount; i++) {
             const type = Math.random() > 0.3 ? 'confetti' : 'heart';
-            const particle = new Particle(x, y, type);
-            // Give burst particles more varied initial velocities
-            particle.speedX = (Math.random() - 0.5) * 6;
-            particle.speedY = (Math.random() - 0.5) * 6 - 2;
+            const particle = new Particle(x, y, type, true);
             particles.push(particle);
         }
+    }
+    
+    // Create falling photo confetti
+    function createPhotoConfetti(x, y) {
+        // Pick a random photo
+        const randomPhoto = becPhotos[Math.floor(Math.random() * becPhotos.length)];
+        
+        const photoDiv = document.createElement('div');
+        photoDiv.className = 'photo-confetti';
+        
+        // Create image element
+        const img = document.createElement('img');
+        img.src = randomPhoto;
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '8px';
+        
+        photoDiv.appendChild(img);
+        
+        // Random size between 60px and 120px
+        const size = Math.random() * 60 + 60;
+        photoDiv.style.width = size + 'px';
+        photoDiv.style.height = size + 'px';
+        
+        // Position at click location
+        photoDiv.style.left = x + 'px';
+        photoDiv.style.top = y + 'px';
+        
+        // Random rotation and animation duration
+        const rotation = Math.random() * 720 - 360; // -360 to 360 degrees
+        const duration = Math.random() * 2 + 3; // 3-5 seconds
+        const drift = Math.random() * 200 - 100; // -100 to 100px horizontal drift
+        
+        photoDiv.style.setProperty('--rotation', rotation + 'deg');
+        photoDiv.style.setProperty('--drift', drift + 'px');
+        photoDiv.style.animationDuration = duration + 's';
+        
+        document.body.appendChild(photoDiv);
+        photoElements.push(photoElements);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            photoDiv.remove();
+            photoElements = photoElements.filter(el => el !== photoDiv);
+        }, duration * 1000 + 500);
     }
     
     // Animation loop
@@ -261,8 +323,9 @@
         // Add new particles occasionally
         if (Math.random() < 0.3 && particles.length < 100) {
             const x = Math.random() * canvas.width;
+            const y = -50;
             const type = Math.random() > 0.5 ? 'heart' : 'confetti';
-            particles.push(new Particle(x, -50, type));
+            particles.push(new Particle(x, -50, type, false));
         }
         
         requestAnimationFrame(animate);
@@ -287,15 +350,23 @@
     // Handle window resize
     window.addEventListener('resize', resizeCanvas);
     
-    // Click to create burst of confetti
+    // Click to create burst of confetti AND photos
     canvas.addEventListener('click', function(e) {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         createBurst(x, y);
+        
+        // Create 3-5 photo confetti at click location
+        const photoCount = Math.floor(Math.random() * 3) + 3; // 3-5 photos
+        for (let i = 0; i < photoCount; i++) {
+            // Slight offset from exact click position for spread effect
+            const offsetX = e.clientX + (Math.random() - 0.5) * 100;
+            const offsetY = e.clientY + (Math.random() - 0.5) * 100;
+            createPhotoConfetti(offsetX, offsetY);
+        }
     });
 })();
 </script>
-    
 </body>
 </html>
