@@ -6,16 +6,7 @@
     --border-color: #d3c4a2;     /* A border color that complements the new background */
 }
 
-.profile-picture {
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-    border: 3px solid #121211;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    object-fit: cover;          /* stops the stretching/distortion */
-    object-position: center 30%; /* adjust this to reframe/"zoom" */
-}
+
 
 body {
     font-family: 'Inter', sans-serif;
