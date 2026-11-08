@@ -105,6 +105,11 @@ h2 {
     color: var(--secondary-text);
 }
 
+.item p.paper {
+    margin-top: 0.2rem;
+    font-size: 0.95em;
+}
+
 /* --- Links --- */
 a {
     color: var(--accent-color);
